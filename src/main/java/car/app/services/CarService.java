@@ -16,7 +16,7 @@ public class CarService {
 	private Map<Long, Car> Cars = CarDatabase.getCars();
 
 	public CarService() {
-		Timestamp tm = new Timestamp(0);
+		Timestamp tm = new Timestamp(1570176408);
 		Cars.put(1L, new Car(1, "coche1", tm, "España", tm, tm));
 		Cars.put(2L, new Car(2, "coche5", tm, "Alemania", tm, tm));
 	}
