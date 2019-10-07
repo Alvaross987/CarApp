@@ -2,6 +2,7 @@ package car.app.services;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +17,13 @@ public class CarService {
 	private Map<Long, Car> Cars = CarDatabase.getCars();
 
 	public CarService() {
-		Timestamp tm = new Timestamp(1570176408);
+		Timestamp tm = new Timestamp(new Date().getTime());
 		Cars.put(1L, new Car(1, "coche1", tm, "España", tm, tm));
 		Cars.put(2L, new Car(2, "coche5", tm, "Alemania", tm, tm));
+	}
+	
+	private void actualizafecha(Car car) {
+		car.setLast_Updated(new Timestamp(new Date().getTime()));
 	}
 
 	public List<Car> getCars() {
@@ -32,6 +37,7 @@ public class CarService {
 
 	public Car addCar(Car car) {
 		car.setId(Cars.size() + 1);
+		actualizafecha(car);
 		Cars.put((long) car.getId(), car);
 		return car;
 	}
@@ -41,6 +47,7 @@ public class CarService {
 		if (id == 0) {
 			return null;
 		}
+		actualizafecha(car);
 		Cars.put((long) car.getId(), car);
 		return car;
 	}

@@ -17,46 +17,49 @@ import car.app.entity.Car;
 import car.app.services.CarService;
 
 @Path("/cars")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
 public class CarResource {
 
 	@EJB
 	CarService carService;
 
 	@GET
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCars() {
 		return Response.status(Status.OK).entity(carService.getCars()).build();
 	}
 
 	@GET
 	@Path("/{carId}")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCar(@PathParam("carId") long id) {
+		
 		return Response.ok(carService.getCar(id)).build();
 	}
 
 	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response addCar(Car car) {
-
-		carService.addCar(car);
-
-		return Response.ok().build();
+		
+		return Response.ok(carService.addCar(car)).build();
 	}
 
 	@PUT
 	@Path("/{CarId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateCar(@PathParam("CarId") int id, Car car) {
 		car.setId(id);
-		carService.updateCar(car);
-
-		return Response.ok().build();
+		
+		return Response.ok(carService.updateCar(car)).build();
 	}
 
 	@DELETE
 	@Path("/{carId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteCar(@PathParam("carId") int id) {
-		carService.deleteCar(id);
-
-		return Response.ok().build();
+		
+		return Response.ok(carService.deleteCar(id)).build();
 	}
 }
