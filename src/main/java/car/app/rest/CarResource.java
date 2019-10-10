@@ -1,6 +1,7 @@
 package car.app.rest;
 
 import javax.ejb.EJB;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,49 +18,45 @@ import car.app.entity.Car;
 import car.app.services.CarService;
 
 @Path("/cars")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class CarResource {
 
 	@EJB
 	CarService carService;
 
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCars() {
 		return Response.status(Status.OK).entity(carService.getCars()).build();
 	}
 
 	@GET
 	@Path("/{carId}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCar(@PathParam("carId") long id) {
-		
+	public Response getCar(@PathParam("carId") int id) {
+
 		return Response.ok(carService.getCar(id)).build();
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response addCar(Car car) {
-		
-		return Response.ok(carService.addCar(car)).build();
+	public Response addCar(@Valid Car car) {
+
+		Car newCar = carService.addCar(car);
+		return Response.status(Status.CREATED).entity(newCar).build();
 	}
 
 	@PUT
 	@Path("/{CarId}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateCar(@PathParam("CarId") int id, Car car) {
+	public Response updateCar(@PathParam("CarId") int id, @Valid Car car) {
+
 		car.setId(id);
-		
+
 		return Response.ok(carService.updateCar(car)).build();
 	}
 
 	@DELETE
 	@Path("/{carId}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteCar(@PathParam("carId") int id) {
-		
+
 		return Response.ok(carService.deleteCar(id)).build();
 	}
 }

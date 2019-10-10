@@ -1,59 +1,83 @@
 package car.app.services;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.validation.Valid;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
-import car.app.database.CarDatabase;
 import car.app.entity.Car;
+import car.app.entity.ErrorMessage;
 
 @Stateless
 public class CarService {
 
-	private Map<Long, Car> Cars = CarDatabase.getCars();
+	@PersistenceContext(unitName = "postg")
+	EntityManager em;
 
-	public CarService() {
-		Timestamp tm = new Timestamp(new Date().getTime());
-		Cars.put(1L, new Car(1, "coche1", tm, "España", tm, tm));
-		Cars.put(2L, new Car(2, "coche5", tm, "Alemania", tm, tm));
-	}
-	
-	private void actualizafecha(Car car) {
-		car.setLast_Updated(new Timestamp(new Date().getTime()));
-	}
 
 	public List<Car> getCars() {
-		return new ArrayList<>(Cars.values());
+		String q = "from Car";
+		return em.createQuery(q, Car.class).getResultList();
 	}
 
-	public Car getCar(long CarId) {
-		return Cars.get(CarId);
+	public Car getCar(int id) {
 
-	}
+		ErrorMessage errorMessage = new ErrorMessage("CAR WITH ID " + id + " NOT FOUND", 404, "");
+		Response response = Response.status(Status.NOT_FOUND).entity(errorMessage).build();
 
-	public Car addCar(Car car) {
-		car.setId(Cars.size() + 1);
-		actualizafecha(car);
-		Cars.put((long) car.getId(), car);
-		return car;
-	}
+		// Car car = Cars.get(CarId);
+		Car car = em.find(Car.class, id);
 
-	public Car updateCar(Car car) {
-		int id = car.getId();
-		if (id == 0) {
-			return null;
+		if (car == null) {
+			throw new WebApplicationException(response);
 		}
-		actualizafecha(car);
-		Cars.put((long) car.getId(), car);
+		return car;
+
+	}
+
+	public Car addCar(@Valid Car car) {
+		em.persist(car);
 		return car;
 	}
 
-	public Car deleteCar(int CarId) {
-		return Cars.remove((long) CarId);
+	public Car updateCar(@Valid Car car) {
+		int id = car.getId();
+		ErrorMessage errorMessage = new ErrorMessage("CAR WITH ID " + id + " NOT FOUND", 404, "");
+		Response response = Response.status(Status.NOT_FOUND).entity(errorMessage).build();
+		Car car2 = em.find(Car.class, id);
+		if (car2 == null) {
+			throw new WebApplicationException(response);
+		}
+		em.getTransaction().begin();
+		car2.setName(car.getName());
+		car2.setCountry(car.getCountry());
+		if (car.getCreated_at() != null) {
+			car2.setCreated_at(car.getCreated_at());
+		}
+		if (car.getRegistration() != null) {
+			car2.setRegistration(car.getRegistration());
+		}
+
+		em.getTransaction().commit();
+		return car;
+	}
+
+	public Car deleteCar(int id) {
+		ErrorMessage errorMessage = new ErrorMessage("CAR WITH ID " + id + " NOT FOUND", 404, "");
+		Response response = Response.status(Status.NOT_FOUND).entity(errorMessage).build();
+
+		Car car = em.find(Car.class, id);
+
+		if (car == null) {
+			throw new WebApplicationException(response);
+		}
+		em.remove(car);
+		return car;
 
 	}
 
