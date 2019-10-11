@@ -50,13 +50,13 @@ public class CarResource {
 
 		car.setId(id);
 
-		return Response.ok(carService.updateCar(car)).build();
+		return Response.accepted(carService.updateCar(car)).build();
 	}
 
 	@DELETE
 	@Path("/{carId}")
 	public Response deleteCar(@PathParam("carId") int id) {
 
-		return Response.ok(carService.deleteCar(id)).build();
+		return Response.accepted(carService.deleteCar(id)).build();
 	}
 }

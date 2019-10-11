@@ -99,6 +99,7 @@ public class Car {
 	public void setCreated_at(Timestamp created_at) {
 		Created_at = created_at;
 	}
+
 	@JsonIgnore
 	public Timestamp getLast_Updated() {
 		return Last_Updated;

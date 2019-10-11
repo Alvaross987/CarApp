@@ -19,7 +19,6 @@ public class CarService {
 	@PersistenceContext(unitName = "postg")
 	EntityManager em;
 
-
 	public List<Car> getCars() {
 		String q = "from Car";
 		return em.createQuery(q, Car.class).getResultList();
@@ -30,7 +29,6 @@ public class CarService {
 		ErrorMessage errorMessage = new ErrorMessage("CAR WITH ID " + id + " NOT FOUND", 404, "");
 		Response response = Response.status(Status.NOT_FOUND).entity(errorMessage).build();
 
-		// Car car = Cars.get(CarId);
 		Car car = em.find(Car.class, id);
 
 		if (car == null) {
