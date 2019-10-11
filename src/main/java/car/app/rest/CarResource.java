@@ -1,6 +1,7 @@
 package car.app.rest;
 
 import javax.ejb.EJB;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -31,32 +32,31 @@ public class CarResource {
 
 	@GET
 	@Path("/{carId}")
-	public Response getCar(@PathParam("carId") long id) {
+	public Response getCar(@PathParam("carId") int id) {
+
 		return Response.ok(carService.getCar(id)).build();
 	}
 
 	@POST
-	public Response addCar(Car car) {
+	public Response addCar(@Valid Car car) {
 
-		carService.addCar(car);
-
-		return Response.ok().build();
+		Car newCar = carService.addCar(car);
+		return Response.status(Status.CREATED).entity(newCar).build();
 	}
 
 	@PUT
 	@Path("/{CarId}")
-	public Response updateCar(@PathParam("CarId") int id, Car car) {
-		car.setId(id);
-		carService.updateCar(car);
+	public Response updateCar(@PathParam("CarId") int id, @Valid Car car) {
 
-		return Response.ok().build();
+		car.setId(id);
+
+		return Response.accepted(carService.updateCar(car)).build();
 	}
 
 	@DELETE
 	@Path("/{carId}")
 	public Response deleteCar(@PathParam("carId") int id) {
-		carService.deleteCar(id);
 
-		return Response.ok().build();
+		return Response.accepted(carService.deleteCar(id)).build();
 	}
 }

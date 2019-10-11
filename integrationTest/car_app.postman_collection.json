@@ -1,0 +1,536 @@
+{
+	"info": {
+		"_postman_id": "8fd0c5a8-6aed-4c1b-a017-7c568116c435",
+		"name": "car_app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "succeed post test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c22768b0-5d79-459f-ac3c-28dee38f62bd",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.globals.set(\"carId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\t\r\n\t\"name\": \"carF\",\r\n\t\"country\": \"russia\",\r\n\t\"registration\": \"2019-10-11T10:31:08.389+02:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/app/cars",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"app",
+						"cars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "succed get/id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c63830cd-7f46-4be9-b6c2-09b3728dc8a7",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Id is ok\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"carId\"));",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/app/cars/{{carId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"app",
+						"cars",
+						"{{carId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "succeed put test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a657cb65-957c-4c7c-a555-5c2fa501e8ca",
+						"exec": [
+							"pm.test(\"Status code is 202\", function () {",
+							"    pm.response.to.have.status(202);",
+							"});",
+							"",
+							"pm.test(\"Name changed\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql(\"carTest2\");",
+							"});",
+							"",
+							"pm.test(\"Country changed\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.country).to.eql(\"Test2\");",
+							"});",
+							"",
+							"pm.test(\"Id is ok\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"carId\"));",
+							"",
+							"});",
+							"",
+							"pm.test(\"Successful PUT request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"carTest2\",\n\t\"country\": \"Test2\",\n\t\"registration\": \"2019-10-11T10:31:08.389+02:00\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/app/cars/{{carId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"app",
+						"cars",
+						"{{carId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "succed get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c63830cd-7f46-4be9-b6c2-09b3728dc8a7",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/app/cars",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"app",
+						"cars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "succeed delete test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e25e6139-ca50-459f-a6c0-ec352687fd75",
+						"exec": [
+							"pm.test(\"Status code is 202\", function () {",
+							"    pm.response.to.have.status(202);",
+							"});",
+							"",
+							"pm.test(\"Id is ok\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"carId\"));",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/app/cars/{{carId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"app",
+						"cars",
+						"{{carId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "failed delete test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "311080da-b509-4f78-bc1e-5df409254c50",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"errorCode is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errorCode).to.eql(404);",
+							"});",
+							"",
+							"pm.test(\"errorMessage is okay\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errorMessage).to.eql(\"CAR WITH ID \" + pm.globals.get(\"carId\") +\" NOT FOUND\");",
+							"",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/app/cars/{{carId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"app",
+						"cars",
+						"{{carId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "failed put test on wrong id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a657cb65-957c-4c7c-a555-5c2fa501e8ca",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"errorCode is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errorCode).to.eql(404);",
+							"});",
+							"",
+							"pm.test(\"errorMessage is okay\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errorMessage).to.eql(\"CAR WITH ID \" + pm.globals.get(\"carId\") +\" NOT FOUND\");",
+							"",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"carTest\",\n\t\"country\": \"Test\",\n\t\"registration\": \"2019-10-11T10:31:08.389+02:00\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/app/cars/{{carId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"app",
+						"cars",
+						"{{carId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "failed get/id test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5c266c3e-b5cf-4b9e-bca2-4068d96e40db",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"errorCode is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errorCode).to.eql(404);",
+							"});",
+							"",
+							"pm.test(\"errorMessage is okay\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errorMessage).to.eql(\"CAR WITH ID \" + pm.globals.get(\"carId\") +\" NOT FOUND\");",
+							"",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"name": "Content-Type",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/app/cars/{{carId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"app",
+						"cars",
+						"{{carId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "failed post test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5c266c3e-b5cf-4b9e-bca2-4068d96e40db",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"CANNOT BE NULL\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\t\r\n\t\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/app/cars",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"app",
+						"cars"
+					]
+				},
+				"description": "this must be a custom error 400"
+			},
+			"response": []
+		},
+		{
+			"name": "failed put test on update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a657cb65-957c-4c7c-a555-5c2fa501e8ca",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"CANNOT BE NULL\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\n\t\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/app/cars/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"app",
+						"cars",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

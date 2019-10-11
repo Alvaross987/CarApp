@@ -1,52 +1,62 @@
 package car.app.services;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import car.app.database.CarDatabase;
 import car.app.entity.Car;
+import car.app.exception.DataNotFoundException;
 
 @Stateless
 public class CarService {
 
-	private Map<Long, Car> Cars = CarDatabase.getCars();
-
-	public CarService() {
-		Timestamp tm = new Timestamp(0);
-		Cars.put(1L, new Car(1, "coche1", tm, "España", tm, tm));
-		Cars.put(2L, new Car(2, "coche5", tm, "Alemania", tm, tm));
-	}
+	@PersistenceContext(unitName = "postg")
+	EntityManager em;
 
 	public List<Car> getCars() {
-		return new ArrayList<>(Cars.values());
+		String q = "from Car";
+		return em.createQuery(q, Car.class).getResultList();
 	}
 
-	public Car getCar(long CarId) {
-		return Cars.get(CarId);
+	public Car getCar(int id) {
+		Car car = em.find(Car.class, id);
+
+		if (car == null) {
+			throw new DataNotFoundException("CAR WITH ID " + id + " NOT FOUND");
+		}
+		return car;
 
 	}
 
 	public Car addCar(Car car) {
-		car.setId(Cars.size() + 1);
-		Cars.put((long) car.getId(), car);
+		em.persist(car);
 		return car;
 	}
 
 	public Car updateCar(Car car) {
 		int id = car.getId();
-		if (id == 0) {
-			return null;
+		Car car2 = em.find(Car.class, id);
+		if (car2 == null) {
+			throw new DataNotFoundException("CAR WITH ID " + id + " NOT FOUND");
 		}
-		Cars.put((long) car.getId(), car);
+		em.getTransaction().begin();
+		car2.setName(car.getName());
+		car2.setCountry(car.getCountry());
+		car2.setRegistration(car.getRegistration());
+		em.getTransaction().commit();
 		return car;
 	}
 
-	public Car deleteCar(int CarId) {
-		return Cars.remove((long) CarId);
+	public Car deleteCar(int id) {
+		Car car = em.find(Car.class, id);
+
+		if (car == null) {
+			throw new DataNotFoundException("CAR WITH ID " + id + " NOT FOUND");
+		}
+		em.remove(car);
+		return car;
 
 	}
 
