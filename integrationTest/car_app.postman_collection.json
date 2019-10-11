@@ -21,8 +21,7 @@
 							"});",
 							"",
 							"var jsonData = pm.response.json();",
-							"console.log(jsonData)",
-							"pm.environment.set(\"carId\", jsonData.id);"
+							"pm.globals.set(\"carId\", jsonData.id);"
 						],
 						"type": "text/javascript"
 					}
@@ -40,7 +39,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\t\r\n\t\"name\": \"car13\",\r\n\t\"country\": \"russia\"\r\n}",
+					"raw": "{\t\r\n\t\"name\": \"carF\",\r\n\t\"country\": \"russia\",\r\n\t\"registration\": \"2019-10-11T10:31:08.389+02:00\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -72,7 +71,11 @@
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
-							""
+							"pm.test(\"Id is ok\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"carId\"));",
+							"",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -118,6 +121,12 @@
 							"    pm.expect(jsonData.country).to.eql(\"Test2\");",
 							"});",
 							"",
+							"pm.test(\"Id is ok\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"carId\"));",
+							"",
+							"});",
+							"",
 							"pm.test(\"Successful PUT request\", function () {",
 							"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
 							"});"
@@ -138,7 +147,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"carTest2\",\n\t\"country\": \"Test2\"\n}",
+					"raw": "{\n\t\"name\": \"carTest2\",\n\t\"country\": \"Test2\",\n\t\"registration\": \"2019-10-11T10:31:08.389+02:00\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -171,6 +180,7 @@
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
+							"",
 							""
 						],
 						"type": "text/javascript"
@@ -205,7 +215,12 @@
 							"pm.test(\"Status code is 202\", function () {",
 							"    pm.response.to.have.status(202);",
 							"});",
-							""
+							"",
+							"pm.test(\"Id is ok\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"carId\"));",
+							"",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -215,7 +230,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/app/cars/6",
+					"raw": "localhost:8080/app/cars/{{carId}}",
 					"host": [
 						"localhost"
 					],
@@ -223,7 +238,7 @@
 					"path": [
 						"app",
 						"cars",
-						"6"
+						"{{carId}}"
 					]
 				}
 			},
@@ -248,7 +263,7 @@
 							"",
 							"pm.test(\"errorMessage is okay\", function () {",
 							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.errorMessage).to.eql(\"CAR WITH ID \" + pm.environment.get(\"carId\") +\" NOT FOUND\");",
+							"    pm.expect(jsonData.errorMessage).to.eql(\"CAR WITH ID \" + pm.globals.get(\"carId\") +\" NOT FOUND\");",
 							"",
 							"});",
 							""
@@ -294,7 +309,7 @@
 							"",
 							"pm.test(\"errorMessage is okay\", function () {",
 							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.errorMessage).to.eql(\"CAR WITH ID \" + pm.environment.get(\"carId\") +\" NOT FOUND\");",
+							"    pm.expect(jsonData.errorMessage).to.eql(\"CAR WITH ID \" + pm.globals.get(\"carId\") +\" NOT FOUND\");",
 							"",
 							"});",
 							""
@@ -315,7 +330,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"carTest\",\n\t\"country\": \"Test\"\n}",
+					"raw": "{\n\t\"name\": \"carTest\",\n\t\"country\": \"Test\",\n\t\"registration\": \"2019-10-11T10:31:08.389+02:00\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -356,7 +371,7 @@
 							"",
 							"pm.test(\"errorMessage is okay\", function () {",
 							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.errorMessage).to.eql(\"CAR WITH ID \" + pm.environment.get(\"carId\") +\" NOT FOUND\");",
+							"    pm.expect(jsonData.errorMessage).to.eql(\"CAR WITH ID \" + pm.globals.get(\"carId\") +\" NOT FOUND\");",
 							"",
 							"});",
 							""

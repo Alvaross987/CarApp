@@ -21,17 +21,18 @@ public class Car {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "id", nullable = false)
 	private int id;
 
-	@Column(name = "name")
+	@Column(name = "name", nullable = false)
 	@NotNull(message = "NAME CANNOT BE NULL")
 	private String name;
 	
-	@Column(name = "registration")
+	@Column(name = "registration", nullable = false)
+	@NotNull(message = "REGISTRATION CANNOT BE NULL")
 	private Timestamp Registration;
 
-	@Column(name = "country")
+	@Column(name = "country", nullable = false)
 	@NotNull(message = "COUNTRY CANNOT BE NULL")
 	private String Country;
 
@@ -75,7 +76,7 @@ public class Car {
 	public void setName(String name) {
 		this.name = name;
 	}
-	@JsonIgnore
+	
 	public Timestamp getRegistration() {
 		return Registration;
 	}
@@ -112,7 +113,6 @@ public class Car {
 	@PrePersist
 	public void prePersist() {
 		Created_at = new Timestamp(new Date().getTime());
-		Registration = new Timestamp(new Date().getTime());
 		Last_Updated = new Timestamp(new Date().getTime());
 	}
 
