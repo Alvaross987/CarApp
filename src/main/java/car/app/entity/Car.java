@@ -28,6 +28,10 @@ public class Car {
 	@NotNull(message = "NAME CANNOT BE NULL")
 	private String name;
 	
+	@Column(name = "brand", nullable = false)
+	@NotNull(message = "BRAND CANNOT BE NULL")
+	private String brand;
+	
 	@Column(name = "registration", nullable = false)
 	@NotNull(message = "REGISTRATION CANNOT BE NULL")
 	private Timestamp Registration;
@@ -50,15 +54,16 @@ public class Car {
 		this.id = i;
 	}
 
-	public Car(int id, String name, Timestamp registration, String country, Timestamp created_at,
+	public Car(int id, String name, String brand, Timestamp registration, String country, Timestamp created_at,
 			Timestamp last_Updated) {
 		super();
 		this.id = id;
 		this.name = name;
-		Registration = registration;
-		Country = country;
-		Created_at = created_at;
-		Last_Updated = last_Updated;
+		this.brand = brand;
+		this.Registration = registration;
+		this.Country = country;
+		this.Created_at = created_at;
+		this.Last_Updated = last_Updated;
 	}
 
 	public int getId() {
