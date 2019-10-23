@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import car.app.entity.Car;
 import car.app.exception.DataNotFoundException;
@@ -16,8 +17,9 @@ public class CarService {
 	EntityManager em;
 
 	public List<Car> getCars() {
-		String q = "from Car";
-		return em.createQuery(q, Car.class).getResultList();
+		TypedQuery<Car> query = em.createQuery("from Car", Car.class);
+		List<Car> list= query.getResultList();
+		return list;
 	}
 
 	public Car getCar(int id) {
