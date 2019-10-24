@@ -82,6 +82,14 @@ public class Car {
 		this.name = name;
 	}
 	
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+
 	public Timestamp getRegistration() {
 		return Registration;
 	}

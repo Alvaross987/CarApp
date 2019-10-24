@@ -1,7 +1,7 @@
 package car.app.services;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
@@ -19,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.exceptions.verification.NeverWantedButInvoked;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import car.app.entity.Car;
@@ -125,7 +123,10 @@ public class CarServiceTest {
 		
 		// Method call
 		final Car c = carService.deleteCar(1);
-
+		Mockito.verify(em, Mockito.never()).remove(car);
+		
+		//Assertion
+		assertEquals(car, c);
 		
 	}
 	
