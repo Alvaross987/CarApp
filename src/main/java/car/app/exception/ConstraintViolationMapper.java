@@ -7,10 +7,13 @@ import java.util.stream.Collectors;
 import javax.ejb.Singleton;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
+
+import org.apache.log4j.Logger;
 
 import car.app.entity.ErrorMessage;
 
@@ -20,12 +23,14 @@ public class ConstraintViolationMapper implements ExceptionMapper<ConstraintViol
 
     @Override
     public Response toResponse(ConstraintViolationException e) {
+    	final Logger logger = Logger.getLogger(ConstraintViolationMapper.class);
+		
         List<ErrorMessage> messages = new ArrayList<ErrorMessage>();
         e.getConstraintViolations().stream()
             .map(ConstraintViolation::getMessage)
             .collect(Collectors.toList()).forEach(error -> messages.add(new ErrorMessage(error, 400, "")));
-    
-		return Response.status(Status.BAD_REQUEST).entity(messages).build();
+    logger.error(messages);
+		return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(messages).build();
     }
 
 }
