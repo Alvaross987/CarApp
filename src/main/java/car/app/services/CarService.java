@@ -3,6 +3,7 @@ package car.app.services;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -17,12 +18,13 @@ public class CarService {
 	EntityManager em;
 
 	public List<Car> getCars() {
-		TypedQuery<Car> query = em.createQuery("from Car", Car.class);
+		TypedQuery<Car> query = em.createQuery("from Car order by id", Car.class);
 		List<Car> list= query.getResultList();
+
 		return list;
 	}
-
-	public Car getCar(int id) {
+	
+	public Car getCar(int id) throws DataNotFoundException {
 		Car car = em.find(Car.class, id);
 
 		if (car == null) {
@@ -37,27 +39,32 @@ public class CarService {
 		return car;
 	}
 
-	public Car updateCar(Car car) {
+	public Car updateCar(Car car) throws DataNotFoundException {
 		int id = car.getId();
 		Car car2 = em.find(Car.class, id);
 		if (car2 == null) {
 			throw new DataNotFoundException("CAR WITH ID " + id + " NOT FOUND");
 		}
+		
 		em.getTransaction().begin();
-		car2.setName(car.getName());
+		car2.setBrand(car.getBrand());
+		car2.setModel(car.getModel());
+		car2.setColor(car.getColor());
 		car2.setCountry(car.getCountry());
 		car2.setRegistration(car.getRegistration());
 		em.getTransaction().commit();
-		return car;
+
+		return car2;
 	}
 
-	public Car deleteCar(int id) {
+	public Car deleteCar(int id) throws DataNotFoundException {
 		Car car = em.find(Car.class, id);
 
 		if (car == null) {
 			throw new DataNotFoundException("CAR WITH ID " + id + " NOT FOUND");
 		}
 		em.remove(car);
+
 		return car;
 
 	}

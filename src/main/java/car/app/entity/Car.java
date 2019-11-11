@@ -8,12 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import io.swagger.v3.oas.annotations.Hidden;
 
 @Entity
 @Table(name = "car.car")
@@ -23,26 +27,34 @@ public class Car {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private int id;
-
-	@Column(name = "name", nullable = false)
-	@NotNull(message = "NAME CANNOT BE NULL")
-	private String name;
 	
-	@Column(name = "brand", nullable = false)
 	@NotNull(message = "BRAND CANNOT BE NULL")
-	private String brand;
+	@ManyToOne()
+	@JoinColumn(name= "brand_id", updatable = true)
+	private Brand brand;
 	
 	@Column(name = "registration", nullable = false)
 	@NotNull(message = "REGISTRATION CANNOT BE NULL")
-	private Timestamp Registration;
+	private Timestamp registration;
 
-	@Column(name = "country", nullable = false)
 	@NotNull(message = "COUNTRY CANNOT BE NULL")
-	private String Country;
+	@ManyToOne
+	@JoinColumn(name= "country_id", updatable = true)
+	private Country Country;
+	
+	@Column(name = "model")
+	private String model;
+	
+	@Column(name = "color")
+	private String color;
 
+	@Hidden
+	@JsonIgnore
 	@Column(name = "created_at")
 	private Timestamp Created_at;
-
+	
+	@Hidden
+	@JsonIgnore
 	@Column(name = "last_updated")
 	private Timestamp Last_Updated;
 
@@ -54,13 +66,13 @@ public class Car {
 		this.id = i;
 	}
 
-	public Car(int id, String name, String brand, Timestamp registration, String country, Timestamp created_at,
+	public Car(int id, Brand brand, Timestamp registration, Country country, Timestamp created_at,
 			Timestamp last_Updated) {
+		
 		super();
 		this.id = id;
-		this.name = name;
 		this.brand = brand;
-		this.Registration = registration;
+		this.registration = registration;
 		this.Country = country;
 		this.Created_at = created_at;
 		this.Last_Updated = last_Updated;
@@ -73,30 +85,47 @@ public class Car {
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 	
+	public Brand getBrand() {
+		return brand;
+	}
+
+	public void setBrand(Brand brand) {
+		this.brand = brand;
+	}
+
 	public Timestamp getRegistration() {
-		return Registration;
+		return registration;
 	}
 	
 	public void setRegistration(Timestamp registration) {
-		Registration = registration;
+		this.registration = registration;
 	}
 
-	public String getCountry() {
+	public Country getCountry() {
 		return Country;
 	}
 
-	public void setCountry(String country) {
+	public void setCountry(Country country) {
 		Country = country;
 	}
+	
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
 	@JsonIgnore
 	public Timestamp getCreated_at() {
 		return Created_at;
@@ -105,7 +134,7 @@ public class Car {
 	public void setCreated_at(Timestamp created_at) {
 		Created_at = created_at;
 	}
-
+	
 	@JsonIgnore
 	public Timestamp getLast_Updated() {
 		return Last_Updated;
