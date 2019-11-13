@@ -17,6 +17,7 @@ import car.app.entity.User;
 
 @Stateless
 public class UserService {
+
 	Algorithm algorithm = Algorithm.HMAC256("secret");
 	@PersistenceContext(unitName = "postg")
 	EntityManager em;
@@ -37,7 +38,14 @@ public class UserService {
 		}
 		return true;
 	}
-
+	
+	public User giveAdmin(Integer id) {
+		User user = em.find(User.class, id);
+		em.getTransaction().begin();
+		user.setIsAdmin(1);
+		em.getTransaction().commit();
+		return null;
+	}
 	
 	public String generateToken(String username) {
 		TypedQuery<User> query = em.createQuery("from User where username = :name", User.class);
@@ -45,15 +53,15 @@ public class UserService {
 		String token = "";
 		Calendar cal = Calendar.getInstance();
 		long t = cal.getTimeInMillis();
-		cal.setTimeInMillis(t+4500000);
-		Date now = cal.getTime();
+		cal.setTimeInMillis(t+2250000);
+		Date later = cal.getTime();
 		
 		try {
 
 			token = JWT.create()
 					.withIssuer(username)
-					.withClaim("isadmin", user.getIsadmin())
-					.withExpiresAt(now)
+					.withClaim("isadmin", user.getIsAdmin())
+					.withExpiresAt(later)
 					.sign(algorithm);
 			em.getTransaction().begin();
 			user.setToken(token);

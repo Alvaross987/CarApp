@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
 
 import car.app.entity.Car;
+import car.app.filter.AdminFilter;
 import car.app.filter.AuthFilter;
 import car.app.services.CarService;
 
@@ -24,12 +25,12 @@ import car.app.services.CarService;
 @Path("/cars")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Interceptors(AuthFilter.class)
 public class CarResource implements CarResourceI {
 	final Logger logger = Logger.getLogger(CarResource.class);
 	@EJB(name = "carService	")
 	CarService carService;
 	
-	@Interceptors(AuthFilter.class)
 	public Response getCars(HttpHeaders httpHeaders) {
 		return Response.status(Status.OK).entity(carService.getCars()).build();
 	}
@@ -42,20 +43,20 @@ public class CarResource implements CarResourceI {
 		return result;
 	}
 
-	
+	@Interceptors(AdminFilter.class)
 	public Response addCar(HttpHeaders httpHeaders, Car car) {
 
 		Car newCar = carService.addCar(car);
 		return Response.status(Status.CREATED).entity(newCar).build();
 	}
-
+	@Interceptors(AdminFilter.class)
 	public Response updateCar(HttpHeaders httpHeaders, Integer id, Car car) {
 
 		car.setId(id);
 
 		return Response.accepted(carService.updateCar(car)).build();
 	}
-
+	@Interceptors(AdminFilter.class)
 	public Response deleteCar(HttpHeaders httpHeaders, Integer id) {
 
 		return Response.accepted(carService.deleteCar(id)).build();

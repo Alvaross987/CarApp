@@ -7,6 +7,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import car.app.entity.Brand;
@@ -25,7 +27,7 @@ public interface BrandResourceI {
 	@ApiResponse(content = @Content(mediaType = "application/json"), links = {
 			@Link(name = "Brands", operationId = "getAllBrand") }, responseCode = "200", description = "brands getted")
 	@Tag(name = "/brand")
-	public Response getAllBrand();
+	public Response getAllBrand(@Context HttpHeaders httpHeaders);
 
 	@GET
 	@Path("/{brandId}")
@@ -34,7 +36,7 @@ public interface BrandResourceI {
 			@Link(name = "brand", operationId = "getBrand", parameters = @LinkParameter(name = "brandId", expression = "$request.query.brandId")) }, responseCode = "200", description = "brand getted")
 	@ApiResponse(content = @Content(mediaType = "application/json"), responseCode = "404", description = "brand not found")
 	@Tag(name = "/brand/id")
-	public Response getBrand(
+	public Response getBrand(@Context HttpHeaders httpHeaders,
 			@Parameter(description = "The Id of the Brand that needs to be found", required = true) @PathParam("brandId") Integer id);
 
 	@POST
@@ -43,7 +45,7 @@ public interface BrandResourceI {
 			@Link(name = "brand", operationId = "addBrand") }, responseCode = "201", description = "New brand Added")
 	@ApiResponse(content = @Content(mediaType = "application/json"), responseCode = "400", description = "Parameters cannot be null")
 	@Tag(name = "/brand")
-	public Response addBrand(@RequestBody(description = "Created Brand object", required = true) @Valid Brand brand);
+	public Response addBrand(@Context HttpHeaders httpHeaders, @RequestBody(description = "Created Brand object", required = true) @Valid Brand brand);
 
 	@PUT
 	@Path("/{brandId}")
@@ -53,7 +55,7 @@ public interface BrandResourceI {
 	@ApiResponse(content = @Content(mediaType = "application/json"), responseCode = "404", description = "Brand not found")
 	@ApiResponse(content = @Content(mediaType = "application/json"), responseCode = "400", description = "Parameters cannot be null")
 	@Tag(name = "/brand")
-	public Response updateBrand(
+	public Response updateBrand(@Context HttpHeaders httpHeaders,
 			@Parameter(description = "The Id of the Brand that needs to be modified", required = true) @PathParam("brandId") Integer id,
 			@RequestBody(description = "Modified Brand object", required = true) @Valid Brand brand);
 
@@ -65,6 +67,6 @@ public interface BrandResourceI {
 					+ "brandId")) }, responseCode = "202", description = "Brand Deleted")
 	@ApiResponse(content = @Content(mediaType = "application/json"), responseCode = "404", description = "Brand not found")
 	@Tag(name = "/brand")
-	public Response deleteBrand(
+	public Response deleteBrand(@Context HttpHeaders httpHeaders,
 			@Parameter(description = "The Id of Brand that needs to be deleted", required = true) @PathParam("brandId") Integer id);
 }
