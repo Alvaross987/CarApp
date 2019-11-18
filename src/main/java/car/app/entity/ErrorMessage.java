@@ -1,12 +1,7 @@
 package car.app.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
 public class ErrorMessage {
-
-	@Id
+	
 	private int errorCode;
 
 	private String errorMessage;

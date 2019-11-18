@@ -49,6 +49,7 @@ public class CarResource implements CarResourceI {
 		Car newCar = carService.addCar(car);
 		return Response.status(Status.CREATED).entity(newCar).build();
 	}
+	
 	@Interceptors(AdminFilter.class)
 	public Response updateCar(HttpHeaders httpHeaders, Integer id, Car car) {
 
@@ -56,6 +57,7 @@ public class CarResource implements CarResourceI {
 
 		return Response.accepted(carService.updateCar(car)).build();
 	}
+	
 	@Interceptors(AdminFilter.class)
 	public Response deleteCar(HttpHeaders httpHeaders, Integer id) {
 

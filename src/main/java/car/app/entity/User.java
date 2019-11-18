@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.Hidden;
 
 @Entity
-@Table(name="car.user")
+@Table(name="user")
 public class User {
 	
 	@Id
@@ -27,15 +27,15 @@ public class User {
 	private int id;
 	
 	@Column(name = "firstname", nullable = false)
-	@NotNull
+	@NotNull(message = "FIRSTNAME CANNOT BE NULL")
 	private String firstname;
 	
 	@Column(name = "lastname", nullable = false)
-	@NotNull
+	@NotNull(message = "LASTNAME CANNOT BE NULL")
 	private String lastname;
 	
 	@Column(name = "username", unique=true, nullable = false)
-	@NotNull
+	@NotNull(message = "USERNAME CANNOT BE NULL")
 	private String username;
 	
 	@Column(name = "isadmin", nullable = false)
@@ -44,13 +44,13 @@ public class User {
 	private Integer isAdmin;
 	
 	@Column(name = "email", nullable = false)
-	@NotNull
+	@NotNull(message = "EMAIL CANNOT BE NULL")
 	@Hidden
 	@JsonIgnore
 	private String email;
 	
 	@Column(name = "password", nullable = false)
-	@NotNull
+	@NotNull(message = "PASSWORD CANNOT BE NULL")
 	@Hidden
 	@JsonIgnore
 	private String password;

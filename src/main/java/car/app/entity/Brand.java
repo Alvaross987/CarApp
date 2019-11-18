@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.Hidden;
 
 @Entity
-@Table(name = "car.brand")
+@Table(name = "brand")
 public class Brand {
 
 	@Id

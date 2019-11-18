@@ -7,19 +7,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.apache.log4j.Logger;
+
 import car.app.entity.Country;
 import car.app.exception.DataNotFoundException;
 
 @Stateless
 public class CountryService {
 
+	Logger log = Logger.getLogger(CountryService.class);
+	
 	@PersistenceContext(unitName = "postg")
 	EntityManager em;
 
 	public List<Country> getAllCountries() {
 		TypedQuery<Country> query = em.createQuery("from Country order by id", Country.class);
 		List<Country> list= query.getResultList();
-
+		log.info("All counties getted");
 		return list;
 	}
 	
@@ -29,12 +33,14 @@ public class CountryService {
 		if (country == null) {
 			throw new DataNotFoundException("BRAND WITH ID " + id + " NOT FOUND");
 		}
+		log.info("Country with id= " + id + " getted");
 		return country;
 
 	}
 
 	public Country addCountry(Country country) {
 		em.persist(country);
+		log.info("Country added");
 		return country;
 	}
 
@@ -47,7 +53,7 @@ public class CountryService {
 		em.getTransaction().begin();
 		country2.setName(country.getName());
 		em.getTransaction().commit();
-
+		log.info("Country with id= " + id + " modified");
 		return country2;
 	}
 
@@ -58,7 +64,7 @@ public class CountryService {
 			throw new DataNotFoundException("BRAND WITH ID " + id + " NOT FOUND");
 		}
 		em.remove(country);
-
+		log.info("Country with id= " + id + " deleted");
 		return country;
 
 	}

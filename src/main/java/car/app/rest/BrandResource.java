@@ -57,13 +57,13 @@ public class BrandResource implements BrandResourceI {
 
 		brand.setId(id);
 
-		return Response.accepted(brandService.updateBrand(brand)).build();
+		return Response.status(Status.OK).entity(brandService.updateBrand(brand)).build();
 	}
 
 	@Interceptors(AdminFilter.class)
 	public Response deleteBrand(HttpHeaders httpHeaders, Integer id) {
 
-		return Response.accepted(brandService.deleteBrand(id)).build();
+		return Response.status(Status.OK).entity(brandService.deleteBrand(id)).build();
 	}
 
 }

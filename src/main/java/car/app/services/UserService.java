@@ -44,7 +44,7 @@ public class UserService {
 		em.getTransaction().begin();
 		user.setIsAdmin(1);
 		em.getTransaction().commit();
-		return null;
+		return user;
 	}
 	
 	public String generateToken(String username) {

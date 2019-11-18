@@ -8,7 +8,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -34,7 +37,7 @@ public class UserResource {
 
 	@Path("/login")
 	@POST
-	public Response login(User user) {
+	public Response login(@Context HttpHeaders httpHeaders, User user) {
 		boolean status = userService.login(user.getUsername(), user.getPassword());
 		if(status) {
 			String username = user.getUsername();
@@ -55,10 +58,10 @@ public class UserResource {
 		return Response.status(Status.OK).entity(userService.getAllUsers()).build();
 	}
 	
-	@Path("/admin")
+	@Path("/admin/{id}")
 	@PUT
 	@Interceptors(AdminFilter.class)
-	public Response giveAdmin(Integer id) {
-		return Response.status(Status.OK).entity(userService.getAllUsers()).build();
+	public Response giveAdmin(@Context HttpHeaders httpHeaders, @PathParam("id") Integer id) {
+		return Response.status(Status.OK).entity(userService.giveAdmin(id)).build();
 	}
 }
