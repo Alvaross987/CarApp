@@ -15,9 +15,9 @@
 			<!-- <property name="javax.persistence.jdbc.user" value="postgres" /> -->
 			<!-- <property name="javax.persistence.jdbc.password" value="As25092019" 
 				/> -->
-			<property
+			<!-- <property
 				name="javax.persistence.schema-generation.database.action"
-				value="validate" />
+				value="validate"/> -->
 			<property name="hibernate.default_schema" value="cars" />
 			<property name="hibernate.dialect"
 				value="org.hibernate.dialect.PostgreSQLDialect" />

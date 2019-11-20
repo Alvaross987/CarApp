@@ -28,7 +28,7 @@ public class TimerBean {
 
 	}
 
-	public List<Car> checkCars() {
+	public void checkCars() {
 		TypedQuery<Car> query = em.createQuery("from Car order by id", Car.class);
 		List<Car> list = query.getResultList();
 		list.forEach((car) ->{
@@ -37,7 +37,6 @@ public class TimerBean {
 			em.getTransaction().commit();
 		});
 		log.info("All cars have been checked");
-		return list;
 	}
 
 }
