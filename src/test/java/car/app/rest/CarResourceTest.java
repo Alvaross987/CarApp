@@ -39,7 +39,7 @@ public class CarResourceTest {
 		Mockito.when(carService.getCars()).thenReturn(cars);
 
 		// Method call
-		final Response response = carResource.getCars();
+		final Response response = carResource.getCars(null);
 
 		// Assertions
 		assertEquals(response.getStatus(), Status.OK.getStatusCode());
@@ -52,14 +52,16 @@ public class CarResourceTest {
 	public void whenGettingCar_shouldReturnOKandCar() {
 		// Mocks
 		final Car car = new Car(1, new Brand("bmw"), new Timestamp(1), new Country("Spain"), new Timestamp(1), new Timestamp(1));
+		final List<Car> lc = new ArrayList<Car>();
+		lc.add(car);
 		Mockito.when(carService.getCar(1)).thenReturn(car);
 
 		// Method call
-		final Response response = carResource.getCar(1);
+		final Response response = carResource.getCar(null, 1);
 
 		// Assertions
 		assertEquals(response.getStatus(), Status.OK.getStatusCode());
-		assertEquals(car, response.getEntity());
+		assertEquals(lc, response.getEntity());
 	}
 	
 	
@@ -70,7 +72,7 @@ public class CarResourceTest {
 		Mockito.when(carService.addCar(car)).thenReturn(car);
 
 		// Method call
-		final Response response = carResource.addCar(car);
+		final Response response = carResource.addCar(null, car);
 
 		// Assertions
 		assertEquals(response.getStatus(), Status.CREATED.getStatusCode());
@@ -84,7 +86,7 @@ public class CarResourceTest {
 		Mockito.when(carService.updateCar(car)).thenReturn(car);
 
 		// Method call
-		final Response response = carResource.updateCar(1,car);
+		final Response response = carResource.updateCar(null, 1,car);
 
 		// Assertions
 		assertEquals(response.getStatus(), Status.ACCEPTED.getStatusCode());
@@ -99,7 +101,7 @@ public class CarResourceTest {
 		Mockito.when(carService.deleteCar(1)).thenReturn(car);
 
 		// Method call
-		final Response response = carResource.deleteCar(1);
+		final Response response = carResource.deleteCar(null, 1);
 
 		// Assertions
 		assertEquals(response.getStatus(), Status.ACCEPTED.getStatusCode());

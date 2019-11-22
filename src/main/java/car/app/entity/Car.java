@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.Hidden;
 
 @Entity
-@Table(name = "car.car")
+@Table(name = "car")
 public class Car {
 
 	@Id
@@ -44,6 +44,9 @@ public class Car {
 	
 	@Column(name = "model")
 	private String model;
+	
+	@Column(name = "checked", nullable = false)
+	private Integer checked;
 	
 	@Column(name = "color")
 	private String color;
@@ -126,6 +129,14 @@ public class Car {
 		this.color = color;
 	}
 
+	public Integer getChecked() {
+		return checked;
+	}
+
+	public void setChecked(Integer checked) {
+		this.checked = checked;
+	}
+
 	@JsonIgnore
 	public Timestamp getCreated_at() {
 		return Created_at;
@@ -146,13 +157,14 @@ public class Car {
 
 	@PrePersist
 	public void prePersist() {
-		Created_at = new Timestamp(new Date().getTime());
-		Last_Updated = new Timestamp(new Date().getTime());
+		this.checked = 0;
+		this.Created_at = new Timestamp(new Date().getTime());
+		this.Last_Updated = new Timestamp(new Date().getTime());
 	}
 
 	@PreUpdate
 	public void preUpdate() {
-		Last_Updated = new Timestamp(new Date().getTime());
+		this.Last_Updated = new Timestamp(new Date().getTime());
 	}
 
 }

@@ -11,9 +11,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
-
-public class AuthFilter {
-	
+public class AdminFilter {
 	@AroundInvoke
 	public Object auth(InvocationContext ctx) throws Exception {
 		HttpHeaders headers = (HttpHeaders) ctx.getParameters()[0];
@@ -21,10 +19,12 @@ public class AuthFilter {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256("secret");
 			JWTVerifier verifier =
-					JWT.require(algorithm).build();
+					JWT.require(algorithm)
+					   .withClaim("isadmin", 1)
+					   .build();
 			verifier.verify(token);
 		} catch (JWTVerificationException exception) {
-			return Response.status(Status.UNAUTHORIZED).entity("You need to be logged").build();
+			return Response.status(Status.UNAUTHORIZED).entity("You need to be admin").build();
 		}
 		return ctx.proceed();
 	}

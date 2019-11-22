@@ -7,6 +7,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import car.app.entity.Country;
@@ -25,7 +27,7 @@ public interface CountryResourceI {
 	@ApiResponse(content = @Content(mediaType = "application/json"), links = {
 			@Link(name = "country", operationId = "getAllcountries") }, responseCode = "200", description = "All countries getted")
 	@Tag(name = "/country")
-	public Response getAllCountries();
+	public Response getAllCountries(@Context HttpHeaders httpHeaders);
 
 	@GET
 	@Path("/{countryId}")
@@ -34,7 +36,7 @@ public interface CountryResourceI {
 			@Link(name = "country", operationId = "getCountry", parameters = @LinkParameter(name = "countryId", expression = "$request.query.countryId")) }, responseCode = "200", description = "country getted")
 	@ApiResponse(content = @Content(mediaType = "application/json"), responseCode = "404", description = "country not found")
 	@Tag(name = "/country/id")
-	public Response getCountry(
+	public Response getCountry(@Context HttpHeaders httpHeaders,
 			@Parameter(description = "The Id of the country that needs to be found", required = true) @PathParam("countryId") Integer id);
 
 	@POST
@@ -43,7 +45,7 @@ public interface CountryResourceI {
 			@Link(name = "country", operationId = "addCountry") }, responseCode = "201", description = "New country Added")
 	@ApiResponse(content = @Content(mediaType = "application/json"), responseCode = "400", description = "Parameters cannot be null")
 	@Tag(name = "/country")
-	public Response addCountry(@RequestBody(description = "Created country object", required = true) @Valid Country country);
+	public Response addCountry(@Context HttpHeaders httpHeaders, @RequestBody(description = "Created country object", required = true) @Valid Country country);
 
 	@PUT
 	@Path("/{countryId}")
@@ -53,7 +55,7 @@ public interface CountryResourceI {
 	@ApiResponse(content = @Content(mediaType = "application/json"), responseCode = "404", description = "country not found")
 	@ApiResponse(content = @Content(mediaType = "application/json"), responseCode = "400", description = "Parameters cannot be null")
 	@Tag(name = "/country/id")
-	public Response updateCountry(
+	public Response updateCountry(@Context HttpHeaders httpHeaders,
 			@Parameter(description = "The Id of the country that needs to be modified", required = true) @PathParam("countryId") Integer id,
 			@RequestBody(description = "Modified country object", required = true) @Valid Country country);
 
@@ -64,7 +66,7 @@ public interface CountryResourceI {
 			@Link(name = "country", operationId = "deleteCountry", parameters = @LinkParameter(name = "countryId", expression = "$request.query.countryId")) }, responseCode = "202", description = "country Deleted")
 	@ApiResponse(content = @Content(mediaType = "application/json"), responseCode = "404", description = "country not found")
 	@Tag(name = "/country")
-	public Response deleteCountry(
+	public Response deleteCountry(@Context HttpHeaders httpHeaders,
 			@Parameter(description = "The Id of the country that needs to be deleted", required = true) @PathParam("countryId") Integer id);
 
 }

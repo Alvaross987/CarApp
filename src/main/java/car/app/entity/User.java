@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.Hidden;
 
 @Entity
-@Table(name="car.user")
+@Table(name="user")
 public class User {
 	
 	@Id
@@ -26,21 +26,34 @@ public class User {
 	@Column(name = "id", nullable = false)
 	private int id;
 	
-	@Column(name = "username", nullable = false)
-	@NotNull
+	@Column(name = "firstname", nullable = false)
+	@NotNull(message = "FIRSTNAME CANNOT BE NULL")
+	private String firstname;
+	
+	@Column(name = "lastname", nullable = false)
+	@NotNull(message = "LASTNAME CANNOT BE NULL")
+	private String lastname;
+	
+	@Column(name = "username", unique=true, nullable = false)
+	@NotNull(message = "USERNAME CANNOT BE NULL")
 	private String username;
 	
+	@Column(name = "isadmin", nullable = false)
+	@Hidden
+	@JsonIgnore
+	private Integer isAdmin;
+	
+	@Column(name = "email", nullable = false)
+	@NotNull(message = "EMAIL CANNOT BE NULL")
+	@Hidden
+	@JsonIgnore
+	private String email;
+	
 	@Column(name = "password", nullable = false)
-	@NotNull
+	@NotNull(message = "PASSWORD CANNOT BE NULL")
 	@Hidden
 	@JsonIgnore
 	private String password;
-	
-	@Column(name = "isadmin", nullable = false)
-	@NotNull
-	@Hidden
-	@JsonIgnore
-	private Integer isadmin;
 	
 	@Column(name = "token")
 	@Hidden
@@ -65,6 +78,22 @@ public class User {
 		this.id = id;
 	}
 
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -80,13 +109,21 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public Integer getIsadmin() {
-		return isadmin;
+
+	public Integer getIsAdmin() {
+		return isAdmin;
 	}
 
-	public void setIsadmin(Integer isAdmin) {
-		this.isadmin = isAdmin;
+	public void setIsAdmin(Integer isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getToken() {
@@ -115,7 +152,7 @@ public class User {
 
 	@PrePersist
 	public void prePersist() {
-		isadmin = 0;
+		isAdmin = 0;
 		created_At = new Timestamp(new Date().getTime());
 		last_Updated = new Timestamp(new Date().getTime());
 	}

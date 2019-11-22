@@ -1,0 +1,18 @@
+version: "3.1"
+services:
+
+ db:
+   image: postgres:latest
+   environment:
+     POSTGRES_PASSWORD: docker
+     POSTGRES_DB: postgres
+   ports:
+     - "5432:5432"
+ my-payara-project:
+   image: my-payara-project:my
+   ports:
+     - "8080:8080"
+     - "4848:4848"
+     - "8181:8181"
+   volumes:
+     - /var/lib/docker/volumes/payaradocker:/opt/payara41/deployments
