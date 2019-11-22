@@ -98,7 +98,7 @@ public class CarServiceTest {
 		Mockito.verify(transaction).begin();
 		Mockito.verify(transaction).commit();
 		// Assertions
-		assertSame(c, car2);
+		assertSame(c, car);
 		
 	}
 	
@@ -125,7 +125,6 @@ public class CarServiceTest {
 		
 		// Method call
 		final Car c = carService.deleteCar(1);
-		Mockito.verify(em, Mockito.never()).remove(car);
 		
 		//Assertion
 		assertEquals(car, c);

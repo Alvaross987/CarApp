@@ -1,0 +1,3 @@
+docker exec docker-compose_my-payara-project_1
+/opt/payara41/bin/asadmin --host localhost --port 4848 enable-secure-admin
+/opt/payara41/bin/asadmin restart-domain

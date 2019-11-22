@@ -52,6 +52,8 @@ public class CarResourceTest {
 	public void whenGettingCar_shouldReturnOKandCar() {
 		// Mocks
 		final Car car = new Car(1, new Brand("bmw"), new Timestamp(1), new Country("Spain"), new Timestamp(1), new Timestamp(1));
+		final List<Car> lc = new ArrayList<Car>();
+		lc.add(car);
 		Mockito.when(carService.getCar(1)).thenReturn(car);
 
 		// Method call
@@ -59,7 +61,7 @@ public class CarResourceTest {
 
 		// Assertions
 		assertEquals(response.getStatus(), Status.OK.getStatusCode());
-		assertEquals(car, response.getEntity());
+		assertEquals(lc, response.getEntity());
 	}
 	
 	

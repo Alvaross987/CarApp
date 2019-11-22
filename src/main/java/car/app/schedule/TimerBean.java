@@ -2,6 +2,7 @@ package car.app.schedule;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Schedule;
 import javax.ejb.Startup;
 import javax.ejb.Singleton;
@@ -11,6 +12,7 @@ import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
 
+import car.app.db.FlywayUtil;
 import car.app.entity.Car;
 
 @Singleton
@@ -21,6 +23,11 @@ public class TimerBean {
 
 	@PersistenceContext(unitName = "postg")
 	EntityManager em;
+	
+	@PostConstruct
+	public void init() {
+		FlywayUtil.migrate();
+	}
 
 	@Schedule(hour = "*", minute="*/30", persistent = false)
 	public void automaticallyScheduled() {
