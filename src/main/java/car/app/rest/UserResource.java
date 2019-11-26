@@ -4,9 +4,6 @@ import javax.ejb.EJB;
 import javax.interceptor.Interceptors;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -23,20 +20,18 @@ import car.app.services.UserService;
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class UserResource {
+public class UserResource implements UserResourceI {
 	
 	@EJB(name = "userService")
 	UserService userService;
 	
-	
-@POST
+
+
 	public Response addUser(@Valid User user) {
 		return Response.status(Status.CREATED).entity(userService.addUser(user)).build();
 	}
 
 
-	@Path("/login")
-	@POST
 	public Response login(@Context HttpHeaders httpHeaders, User user) {
 		boolean status = userService.login(user.getUsername(), user.getPassword());
 		if(status) {
@@ -51,15 +46,11 @@ public class UserResource {
 
 	}
 	
-	
-	@GET
 	@Interceptors(AdminFilter.class)
-	public Response allUsers() {
+	public Response allUsers(HttpHeaders httpHeader) {
 		return Response.status(Status.OK).entity(userService.getAllUsers()).build();
 	}
-	
-	@Path("/admin/{id}")
-	@PUT
+
 	@Interceptors(AdminFilter.class)
 	public Response giveAdmin(@Context HttpHeaders httpHeaders, @PathParam("id") Integer id) {
 		return Response.status(Status.OK).entity(userService.giveAdmin(id)).build();

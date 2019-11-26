@@ -9,10 +9,9 @@ services:
    ports:
      - "5432:5432"
  my-payara-project:
-   image: my-payara-project:my
+   image: my-payara-project
    ports:
      - "8080:8080"
      - "4848:4848"
      - "8181:8181"
-   volumes:
-     - /var/lib/docker/volumes/payaradocker:/opt/payara41/deployments
+        
