@@ -69,6 +69,7 @@ public class User {
 	@Column(name = "last_updated")
 	@JsonIgnore
 	private Timestamp last_Updated;
+	
 
 	public int getId() {
 		return id;
