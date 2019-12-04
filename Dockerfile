@@ -1,4 +1,4 @@
-FROM alvaross147/my-payara-project
+FROM alvaross147/my-payara-project:1.0
 
 # Setup configuration
 USER payara
