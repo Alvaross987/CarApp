@@ -1,4 +1,4 @@
-FROM alvaross147/my-payara-project:1.0
+FROM payara/server-full:4.181
 
 # Setup configuration
 USER payara
