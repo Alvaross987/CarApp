@@ -1,0 +1,17 @@
+---
+ apiVersion: v1
+ kind: Pod
+ metadata:
+   name: carapp
+   labels:
+     app: web
+ spec:
+   containers:
+     - name: payara
+       image: alvaross147/my-payara-project:1.0
+       ports:
+         - containerPort: 8080
+     - name: db
+       image: postgres:latest
+       ports:
+         - containerPort: 5432
