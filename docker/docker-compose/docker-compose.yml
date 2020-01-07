@@ -6,12 +6,9 @@ services:
    environment:
      POSTGRES_PASSWORD: docker
      POSTGRES_DB: postgres
-   ports:
-     - "5432:5432"
  my-payara-project:
    image: my-payara-project
    ports:
      - "8080:8080"
      - "4848:4848"
-     - "8181:8181"
         

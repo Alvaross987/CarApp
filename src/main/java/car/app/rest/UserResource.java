@@ -1,6 +1,7 @@
 package car.app.rest;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -17,6 +18,7 @@ import car.app.entity.User;
 import car.app.filter.AdminFilter;
 import car.app.services.UserService;
 
+@Stateless
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
